@@ -148,29 +148,28 @@ function resetState(){
    }
 }
 
-
-function selectAnswer(e){
-   const selectedBtn = e.target;
-   selectedBtn.classList.add("clicked");
-   Array.from(answerButtons.children).forEach(button => {
+function selectAnswer(e) {
+    const selectedButton = e.target;
+    const response = selectedButton.textContent; // Capture the text content of the clicked button
+    selectedButton.classList.add("clicked");
+    // Disable all buttons after one is clicked
+    Array.from(answerButtons.children).forEach(button => {
+        button.disabled = true; // Disable the button
         if(button.dataset.correct === "true"){
-            button.classList.add("correct");
+        button.classList.add("clicked");
         }
-        button.disabled = true;
     });
-   nextButton.style.display = "block";
-   if(response == "1"){
-    responses[currentQuestionIndex] = 1;
-   } else if(response.equals("2")){
-    responses[currentQuestionIndex] = 2;
-   } else if(response.equals("3")){
-    responses[currentQuestionIndex] = 3;
-   } else if(response.equals("4")){
-    responses[currentQuestionIndex] = 4;
-   } else if(response.equals("5")){
-    responses[currentQuestionIndex] = 5;
-   }
+
+    // Find the corresponding answer object
+    const answer = questions[currentQuestionIndex].answers.find(ans => ans.text === response);
+
+    // Update the responses array based on the selected answer's response value
+    responses[currentQuestionIndex] = parseInt(answer.response); // Convert response to integer before storing
+
+    // Show the next button
+    nextButton.style.display = "block";
 }
+
 
 
 function showScore(){
