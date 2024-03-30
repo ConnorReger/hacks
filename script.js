@@ -168,21 +168,22 @@ const nextButton = document.getElementById("next-btn");
 
 let currentQuestionIndex = 0;
 let score = 0;
-
+var responses;
 
 function startQuiz(){
    currentQuestionIndex = 0; // Reset to 0, not '0'
    score = 0;
    nextButton.innerHTML = "Next";
    showQuestion();
+   responses = new int[17];
 }
 
 
 function showQuestion(){
    resetState();
-   const currentQuestion = questions[currentQuestionIndex]; // Typo corrected: questions instead of question
-   const questionNo = currentQuestionIndex + 1; // Typo corrected: questionNo instead of questionno
-   questionElement.innerHTML = questionNo + ". " + currentQuestion.question; // Added space after questionNo
+   const currentQuestion = questions[currentQuestionIndex];
+   const questionNo = currentQuestionIndex + 1;
+   questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
 
 
    currentQuestion.answers.forEach(answer => {
@@ -206,17 +207,20 @@ function resetState(){
 
 function selectAnswer(e){
    const selectedBtn = e.target;
-   const isClicked = selectedBtn.dataset.clicked === "true";
    selectedBtn.classList.add("clicked");
-
-   
    Array.from(answerButtons.children).forEach(button => {
-       if(button.dataset.clicked === "true"){
-           button.classList.add("clicked");
-       }
-       button.disabled = true;
-   });
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
    nextButton.style.display = "block";
+   for(let i = 0; i<4; i++){
+    if (selectedBtn.text.equals(questions[currentQuestionIndex].answers[i])){
+        responses[currentQuestionIndex] = i+1;
+        log(responses);
+    }
+   }
 }
 
 
