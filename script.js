@@ -190,9 +190,7 @@ function showQuestion(){
        button.innerHTML = answer.text;
        button.classList.add("btn");
        answerButtons.appendChild(button);
-       if(answer.correct){
-           button.dataset.correct = answer.correct;
-       }
+       button.dataset.clicked = answer.clicked;
        button.addEventListener("click", selectAnswer);
    });
 }
@@ -208,16 +206,13 @@ function resetState(){
 
 function selectAnswer(e){
    const selectedBtn = e.target;
-   const isCorrect = selectedBtn.dataset.correct === "true";
-   if(isCorrect){
-       selectedBtn.classList.add("correct");
-       score++;
-   } else {
-       selectedBtn.classList.add("incorrect");
-   }
+   const isClicked = selectedBtn.dataset.clicked === "true";
+   selectedBtn.classList.add("clicked");
+
+   
    Array.from(answerButtons.children).forEach(button => {
-       if(button.dataset.correct === "true"){
-           button.classList.add("correct");
+       if(button.dataset.clicked === "true"){
+           button.classList.add("clicked");
        }
        button.disabled = true;
    });
